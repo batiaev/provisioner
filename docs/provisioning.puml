@@ -1,0 +1,31 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor User
+participant Backend
+database  Postgres
+queue Cloud
+group Sign up [with user details]
+    User -> Backend: Sign up
+    Backend -> Postgres: validate uniqueness of email/mobile
+    Postgres -> User: user created
+    else
+    Postgres -[#red]> User: user already exist
+end
+
+group Login
+User -> Backend: auth with login & password
+Backend -> Postgres: validate credentials
+Backend -> User: return JWT token
+end
+
+group VM Provisioning
+User -> Backend: send  provisioning request
+Backend -> Postgres: save request
+Backend --> Cloud: provision VM
+Cloud --> Backend: update status of provisioning
+Backend -> User: vm provisioned
+
+end
+@enduml

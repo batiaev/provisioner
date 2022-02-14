@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "provisioning.delay",
+      "type": "java.lang.String",
+      "description": "Delay for fetching queue of requests for provisioning"
+    },
+    {
+      "name": "provisioning.size",
+      "type": "java.lang.Integer",
+      "description": "Amount of requests which will be cleared from queue of provisioning"
+    }
+  ]
+}

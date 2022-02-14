@@ -1,0 +1,8 @@
+@startuml
+[*] --> CREATED: user requested provisioning
+CREATED --> STARTED: request picked for processing
+STARTED --> FAILED: request failed (e.g. not enough resources)
+STARTED --> COMPLETED: vm provisioned
+FAILED --> [*]
+COMPLETED --> [*]
+@enduml

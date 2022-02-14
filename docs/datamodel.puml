@@ -1,0 +1,99 @@
+@startuml
+class User {
+    id: UUID
+    name: String
+    email: String
+    mobile: String
+    password: String
+    role: Role
+}
+
+interface Credentials {
+    String : authHeader()
+}
+
+class JWT {
+    token: String
+}
+
+class LoginPassword {
+    login: String
+    password: String
+}
+
+Credentials <|-- JWT
+Credentials <|-- LoginPassword
+
+enum Role {
+    MASTER
+    USER
+}
+
+class VirtualMachineParams {
+    os: OperationSystem
+    ram: Ram
+    hardDisk: Disk
+    cpu: int
+}
+
+class VirtualMachine {
+    id: UUID
+    owner: User
+    zone: String
+    params: VirtualMachineParams
+}
+
+class OperationSystem {
+    type: OSType
+    version: String
+}
+
+enum OSType {
+    WINDOWS,
+    LINUX,
+    MAC
+}
+
+class Ram {
+    bytes: long
+}
+
+class Disk {
+    type: DiskType
+    size: long
+}
+
+enum DiskType {
+    HDD,
+    SSD
+}
+
+class ProvisionRequest {
+    id: UUID
+    state: RequestState
+    owner: User
+    requested: Instant
+    vmDetails: VirtualMachineParams
+}
+
+enum RequestState {
+    CREATED
+    STARTED
+    FAILED
+    COMPLETED
+}
+
+User -- Role
+User -- JWT
+User "1" -- "many" VirtualMachine
+VirtualMachine -- VirtualMachineParams
+User "1" *-- "many" ProvisionRequest
+ProvisionRequest -- RequestState
+ProvisionRequest "1" -- "1" VirtualMachineParams
+VirtualMachineParams *-- Ram
+VirtualMachineParams *-- Disk
+VirtualMachineParams *-- OperationSystem
+OperationSystem -- OSType
+Disk -- DiskType
+
+@enduml
