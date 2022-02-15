@@ -1,0 +1,61 @@
+version: '3.9'
+services:
+  balancer:
+    image: nginx:1.19.6-alpine
+    ports:
+      - "80:80"
+    volumes:
+      - './nginx.conf:/etc/nginx/nginx.conf'
+    networks:
+      - "web_net"
+    depends_on:
+      - app
+  app:
+    build:
+      context: .
+      dockerfile: ./provisioner.dockerfile
+    deploy:
+      mode: replicated
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+    networks:
+      - "web_net"
+      - "db_net"
+    depends_on:
+      - provisioner_db
+    ports:
+      - "8888:8080"
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    restart: always
+    container_name: pgadmin
+    ports:
+      - "9912:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: john.doe@example.com
+      PGADMIN_DEFAULT_PASSWORD: a1128f69-e6f7-4e93-a2df-3d4db6030abc
+      PGADMIN_LISTEN_PORT: 80
+    depends_on:
+      - provisioner_db
+    networks:
+      - "web_net"
+      - "db_net"
+  provisioner_db:
+    image: postgres:14-alpine
+    container_name: provisioner_db
+    ports:
+      - "9112:5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=provisioner
+      - POSTGRES_PASSWORD=provisioner-1234
+      - POSTGRES_DB=provisioner
+    networks:
+      - "db_net"
+
+networks:
+  web_net:
+  db_net:

@@ -3,7 +3,7 @@ package com.batiaev.provisioner.model.vm;
 import com.batiaev.provisioner.model.Microtype;
 
 public class Ram extends Microtype<Long> {
-    protected Ram(Long value) {
+    public Ram(Long value) {
         super(value);
     }
 

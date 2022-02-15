@@ -13,4 +13,9 @@ public class Email extends RegexpValidatedString {
     protected String getRegExp() {
         return REGEXP;
     }
+
+    @Override
+    public String toString() {
+        return super.getValue();
+    }
 }

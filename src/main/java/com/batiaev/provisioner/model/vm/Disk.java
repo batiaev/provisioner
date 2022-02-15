@@ -36,9 +36,6 @@ public class Disk extends Microtype<Long> {
 
     @Override
     public String toString() {
-        return "Disk{" +
-                "type=" + type +
-                "size=" + getValue() +
-                "}";
+        return type + " " + getValue();
     }
 }

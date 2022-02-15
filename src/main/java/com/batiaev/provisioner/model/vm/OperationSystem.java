@@ -12,4 +12,9 @@ public class OperationSystem {
     public static OperationSystem os(OSType type, String version) {
         return OperationSystem.builder().type(type).version(version(version)).build();
     }
+
+    @Override
+    public String toString() {
+        return type + " " + version;
+    }
 }
