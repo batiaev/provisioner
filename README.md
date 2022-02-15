@@ -10,6 +10,13 @@
 ## Run
 `./gradlew bootRun`
 
+## Unresolved tasks
+- custom exception handling
+- unit tests for vm provisioning
+- integration testing / wiremock
+- resilience failsafe/resiliencej
+- proper jwt management
+
 # API
 1. `GET /api/v1/users/sign-in` API for user signup - Fields: Name, email-address, mobile no, password, role. Email and mobile no, role must be unique. Role can be master and non-master. Master accounts can view details of all user VMs while the non-master accounts can view only their own vm details. Master account can delete other user accounts.
    - `UserControllerTest#should_signUp`
